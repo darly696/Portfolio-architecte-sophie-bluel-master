@@ -13,6 +13,9 @@ document.addEventListener("DOMContentLoaded", function () {
         img.alt = work.title;
         figcaption.textContent = work.title;
 
+        //set data category
+        figure.setAttribute("data-category-id", work.categoryId);
+
         figure.appendChild(img);
         figure.appendChild(figcaption);
         gallery.appendChild(figure);

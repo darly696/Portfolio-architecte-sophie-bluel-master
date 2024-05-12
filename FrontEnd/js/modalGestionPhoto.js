@@ -6,17 +6,18 @@ document.addEventListener("DOMContentLoaded", function () {
     //verification si cible au clic est corbeille
     if (event.target.classList.contains("fa-trash")) {
       //recuperation de l id de l image a supprimer
-      const imageId = event.target.closest(".image-container").dataset.imageId;
+      const imageId = event.target.closest(".modal-image-container").dataset
+        .imageId;
 
       //suppression de l image associee
-      fetch(`http://localhost:5678/api/works/&{imageId}`, {
+      fetch(`http://localhost:5678/api/works/${imageId}`, {
         method: "DELETE",
       })
         .then((response) => {
           //garantie suppression reussie meme si pas de donnee renvoyee dans la reponse
           if (response.status === 204) {
             //suppression image du DOM si requête reussie
-            const container = event.target.closest(".image-container");
+            const container = event.target.parentElement;
             container.remove();
           } else {
             throw new Error("Erreur lors de la suppression de l image");
@@ -39,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
       data.forEach((work) => {
         //creation du conteneur pour chaque paire image-corbeille
         const container = document.createElement("div");
-        container.classList.add("image-container");
+        container.classList.add("modal-image-container");
 
         //creation de l element html pour l image
         const img = document.createElement("img");
@@ -71,10 +72,15 @@ document.addEventListener("DOMContentLoaded", function () {
         modal.style.display = "none";
       });
 
-      //fermeture modal clic exterieur
+      //fermeture modale clic exterieur
       window.addEventListener("click", function (event) {
-        if (event.target === modal) {
-          modal.style.display = "none";
+        //verification si modale ouverte
+        if (modal.style.display === "block") {
+          //verification si element cliqué n est pas modale ou un de ses enfants
+          if (!modal.contains(event.target)) {
+            //fermeture modale
+            modal.style.display = "none";
+          }
         }
       });
     })

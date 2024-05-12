@@ -330,15 +330,17 @@ footer nav ul {
   background-color: #1d6154;
   border-radius: 30px;
   padding: 5px 40px;
+  cursor: pointer;
 }
-.image-container {
+.modal-image-container {
   position: relative;
 }
-.image-container .fa-trash {
+.modal-image-container .fa-trash {
   position: absolute;
   top: 5px;
   right: 5px;
   background-color: #000;
   color: #fff;
   font-size: 10px;
+  cursor: pointer;
 }

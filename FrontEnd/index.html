@@ -14,6 +14,7 @@
 	<script src="./js/gallery.js" type="module" defer></script>
 	<script src="./js/index.js" type="module" defer></script>
 	<script src="./js/modalGestionPhoto.js" type="module" defer></script>
+	<script src="./js/modalAjoutPhoto" type="module" defer></script>
 	
 </head>
 <body>
@@ -86,5 +87,35 @@
        </div>
 		</div>
 </dialog>
+<dialog id="modalAjoutPhoto">
+	<h2>Ajout photo</h2>
+	<button id="closeModalAjoutPhoto">&times;</button>
+	<div class="fa fa-arrow-left"></div>
+
+	<div class="image-upload-container">
+	  <div class="image-upload">
+		<i class="fa fa-image"></i>
+		<button id="addPhotoButtonModal">Ajouter photo</button>
+		<p>jpeg. png:4Mo max</p>
+	  </div>
+	</div>
+	<div id="titre-categorie-container">
+	  <h3>Titre</h3>
+	  <input type="text" id="titleInput" placeholder="" />
+	</div>
+	<h3>Categorie</h3>
+	<div class="category-selector">
+	  <select id="categorySelect">
+		<option value="objets">Objets</option>
+		<option value="appartements">Appartements</option>
+		<option value="hotels-restaurants">Hôtels & Restaurants</option>
+	  </select>
+	</div>
+
+	<hr />
+	<div id="validateButton-container">
+	  <button id="validateButton">Valider</button>
+	</div>
+  </dialog>
 </body>
 </html>

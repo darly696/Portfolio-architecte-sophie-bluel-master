@@ -1,0 +1,11 @@
+document.addEventListener("DOMContentLoaded", function () {
+  const openFirstModalButton = document.getElementById("openFirstModalButton");
+  openFirstModalButton.addEventListener("click", function () {
+    openModalAjoutPhoto();
+  });
+});
+
+function openModalAjoutPhoto() {
+  const modalAjoutPhoto = document.getElementById("modalAjoutPhoto");
+  modalAjoutPhoto.showModal();
+}
