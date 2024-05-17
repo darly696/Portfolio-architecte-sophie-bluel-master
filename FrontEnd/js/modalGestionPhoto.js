@@ -83,6 +83,22 @@ document.addEventListener("DOMContentLoaded", function () {
           }
         }
       });
+
+      //ouverture modalAjoutPhoto
+      const openFirstModalButton = document.getElementById(
+        "openFirstModalButton"
+      );
+      openFirstModalButton.addEventListener("click", function () {
+        openModalAjoutPhoto();
+      });
+      function openModalAjoutPhoto() {
+        //fermeture de gestionphoto
+        const modalGestionPhoto = document.getElementById("modalGestionPhoto");
+        modalGestionPhoto.close();
+
+        const modalAjoutPhoto = document.getElementById("modalAjoutPhoto");
+        modalAjoutPhoto.showModal();
+      }
     })
     .catch((error) => {
       console.error("Erreur lors recuperation des données:", error);

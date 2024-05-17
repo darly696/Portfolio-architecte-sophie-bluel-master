@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", function () {
     //RECUPERATION DES DONNEES DU FORMULAIRE ET TRANSFORMATION EN JSON
     const formData = new FormData(loginForm);
     const formDataJSON = Object.fromEntries(formData.entries());
-    console.log("données envoyées:", JSON.stringify(formDataJSON));
 
     //ENVOI DES DONNEES DU FORMULAIRE A L API
     fetch("http://localhost:5678/api/users/login", {
@@ -21,7 +20,6 @@ document.addEventListener("DOMContentLoaded", function () {
     })
       //TRAITEMENT DE LA REPONSE DE LA REQUETE
       .then((response) => {
-        console.log("2tat de la réponse:", response.status);
         if (response.ok) {
           return response.json();
         } else {
@@ -48,38 +46,51 @@ document.addEventListener("DOMContentLoaded", function () {
   const token = localStorage.getItem("token");
   if (token) {
     //SI TOKEN PRESENT ACTIONS A VENIR:
-    //Ajout bouton modifier au DOM
-    const modifierButton = document.getElementById("modifierButton");
-    modifierButton.textContent = "Modifier";
+    //CREATION DU BOUTON MODIFIER
+    const modifierButton = document.createElement("button");
+    modifierButton.id = "modifierButton";
 
-    //Gestion au clic sur bouton modifier
-    modifierButton.addEventListener("click", function () {
-      // afficher modale
-      const modal = document.getElementById("modalgestionPhoto");
-      modal.classList.add("show");
-    });
+    const modifierButtonContainer = document.getElementById(
+      "modifierButtonContainer"
+    );
+    modifierButtonContainer.appendChild(modifierButton);
 
     //Ajout icone
     const icon = document.createElement("i");
     icon.classList.add("far", "fa-pen-to-square");
     modifierButton.appendChild(icon);
 
+    //Gestion au clic sur bouton modifier
+    modifierButton.addEventListener("click", function () {
+      // afficher modale
+      const modal = document.getElementById("modalGestionPhoto");
+      modal.classList.add("show");
+    });
+
     //Ajout bouton apres h2
     const portfolioSection = document.getElementById("portfolio");
-    portfolioSection.insertBefore(
-      modifierButton,
-      portfolioSection.querySelector("h2").nextSibling
-    );
+    const h2Element = portfolioSection.querySelector("h2");
+    h2Element.insertAdjacentElement("afterend", modifierButton);
 
     //Affichage bandeau "mode édition
+
     const editModeBanner = document.getElementById("editModeBanner");
     editModeBanner.style.display = "block";
+
+    //clonage de l icône
+    const clonedIcon = icon.cloneNode(true);
+
+    //Ajout du clone au bandeau
+    editModeBanner.appendChild(clonedIcon);
+    console.log("bouton 'modifier' ajouté:", modifierButton);
 
     //Modification "Login" en "Logout"
     const loginLink = document.getElementById("loginLink");
     loginLink.innerHTML = '<a href="#">Logout</a>';
+
+    //GESTION DECONNEXION UTILISATEUR AU CLIC SUR LOGOUT
     loginLink.addEventListener("click", function () {
-      //Deconnexion de l utilisateur
+      //SUPPRESSION DU TOKEN
       localStorage.removeItem("token");
 
       //Redirection vers page de connexion (login.html)

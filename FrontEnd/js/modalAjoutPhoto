@@ -8,4 +8,13 @@ document.addEventListener("DOMContentLoaded", function () {
 function openModalAjoutPhoto() {
   const modalAjoutPhoto = document.getElementById("modalAjoutPhoto");
   modalAjoutPhoto.showModal();
+
+  //retour à modalGestionPhoto
+  const backButton = document.getElementById("backButton");
+  backButton.addEventListener("click", function () {
+    modalAjoutPhoto.close();
+
+    const modalGestionPhoto = document.getElementById("modalGestionPhoto");
+    modalGestionPhoto.showModal();
+  });
 }
