@@ -1,5 +1,6 @@
-document.addEventListener("DOMContentLoaded", function () {
+export function generateMainGallery() {
   const gallery = document.getElementById("gallery");
+  gallery.innerHTML = "";
 
   fetch("http://localhost:5678/api/works")
     .then((response) => response.json())
@@ -24,4 +25,5 @@ document.addEventListener("DOMContentLoaded", function () {
     .catch((error) => {
       console.error("Erreur lors de la récupération des données:", error);
     });
-});
+}
+generateMainGallery();

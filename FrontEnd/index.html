@@ -13,7 +13,6 @@
 	<script src="./js/categories.js" type="module" defer></script>
 	<script src="./js/gallery.js" type="module" defer></script>
 	<script src="./js/index.js" type="module" defer></script>
-	<script src="./js/login.js" type="module" defer></script>
 	<script src="./js/modalAjoutPhoto.js" type="module" defer></script>
 	<script src="./js/modalGestionPhoto.js" type="module" defer></script>
 	
@@ -21,9 +20,11 @@
 	
 </head>
 <body>
+	<div class = "p-icone">
 	<div id="editModeBanner" class="edit-mode-banner">
 		<p>Mode édition</p>
 	</div>
+   </div>
 <header>
 	<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 	<nav>
@@ -48,8 +49,10 @@
 		</article>
 	</section>
 	<section id="portfolio">
+		<div class="container-h2-button">
 		<h2>Mes Projets</h2>
 		<div id = "modifierButtonContainer"></div>
+     </div>
 	<ul id="categories-menu" class="category-menu">
 	
 	</ul>	
@@ -95,6 +98,7 @@
 	<button id="closeModalAjoutPhoto">&times;</button>
 	<div class="fa fa-arrow-left" id="backButton"></div>
 
+	<div class="form-container">
 	<div class="image-upload-container">
 	  <div class="image-upload">
 		<i class="fa fa-image"></i>
@@ -105,10 +109,12 @@
 	<div id="titre-categorie-container">
 	  <h3>Titre</h3>
 	  <input type="text" id="titleInput" placeholder="" />
+	  <h3>Categorie</h3>
 	</div>
-	<h3>Categorie</h3>
+	
 	<div class="category-selector">
 	  <select id="categorySelect">
+		<option value=""></option>
 		<option value="objets">Objets</option>
 		<option value="appartements">Appartements</option>
 		<option value="hotels-restaurants">Hôtels & Restaurants</option>
@@ -118,6 +124,7 @@
 	<hr />
 	<div id="validateButton-container">
 	  <button id="validateButton">Valider</button>
+	</div>
 	</div>
   </dialog>
 </body>
