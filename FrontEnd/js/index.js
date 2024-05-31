@@ -1,6 +1,7 @@
 import "./gallery.js";
 //Verifier si utilisateur connecté
 const token = localStorage.getItem("token");
+
 if (token) {
   //SI TOKEN PRESENT ACTIONS A VENIR:
   //CREATION DU BOUTON MODIFIER
@@ -51,4 +52,26 @@ if (token) {
     //Redirection vers page de connexion (login.html)
     window.location.href = "login.html";
   });
+  if (modifierButton) {
+    modifierButton.style.display = "block";
+  }
+  if (editModeBanner) {
+    editModeBanner.style.display = "flex";
+  }
+} else {
+  //si token pas present elements cachés
+  const modifierButton = document.getElementById("modifierButton");
+  if (modifierButton) {
+    modifierButton.style.display = "none";
+  }
+
+  const editModeBanner = document.getElementById("editModeBanner");
+  if (editModeBanner) {
+    editModeBanner.style.display = "none";
+  }
+
+  const loginLink = document.getElementById("loginLink");
+  if (loginLink) {
+    loginLink.innerHTML = '<a href="login.html">Login</a>';
+  }
 }
