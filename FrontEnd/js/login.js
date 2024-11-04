@@ -7,11 +7,14 @@ if (loginForm != null) {
   loginForm.addEventListener("submit", function (event) {
     //EMPECHE COMPORTEMENT PAR DEFAUT DU FORMULAIRE
     event.preventDefault();
+    console.log("Formulaire soumis");
+
     //RECUPERATION DES DONNEES DU FORMULAIRE ET TRANSFORMATION EN JSON
     const formData = new FormData(loginForm);
     const formDataJSON = Object.fromEntries(formData.entries());
 
     //ENVOI DES DONNEES DU FORMULAIRE A L API
+    console.log("Envoi des données au serveur", formDataJSON);
     fetch("http://localhost:5678/api/users/login", {
       method: "POST",
       headers: {
@@ -24,6 +27,7 @@ if (loginForm != null) {
         if (response.ok) {
           return response.json();
         } else {
+          console.error("Erreur dans la réponse:", response.status);
           throw new Error("Identifiants invalides");
         }
       })

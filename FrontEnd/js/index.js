@@ -1,77 +1,92 @@
 import "./gallery.js";
-//Verifier si utilisateur connecté
-const token = localStorage.getItem("token");
+import { loadModalImages } from "./modalGestionPhoto.js";
 
-if (token) {
-  //SI TOKEN PRESENT ACTIONS A VENIR:
-  //CREATION DU BOUTON MODIFIER
-  const modifierButton = document.createElement("button");
-  modifierButton.id = "modifierButton";
-  modifierButton.textContent = "Modifier";
-
-  //Ajout icone
-  const icon = document.createElement("i");
-  icon.classList.add("far", "fa-pen-to-square");
-
-  modifierButton.insertBefore(icon, modifierButton.firstChild);
-
-  const portfolioSection = document.getElementById("portfolio");
-  const h2Element = portfolioSection.querySelector("h2");
-
-  h2Element.insertAdjacentElement("afterend", modifierButton);
-
-  //Gestion au clic sur bouton modifier
-  modifierButton.addEventListener("click", function () {
-    // afficher modale
-    const modal = document.getElementById("modalGestionPhoto");
-
-    modal.showModal();
-  });
-
-  //Affichage bandeau "mode édition
-
-  const editModeBanner = document.getElementById("editModeBanner");
-
-  //clonage de l icône
-  const clonedIcon = icon.cloneNode(true);
-
-  const editModeText = editModeBanner.querySelector("p");
-
-  //Ajout du clone au bandeau
-  editModeBanner.insertBefore(clonedIcon, editModeText);
-
-  //Modification "Login" en "Logout"
+document.addEventListener("DOMContentLoaded", () => {
+  const token = localStorage.getItem("token");
+  //selection element loginLink dans le DOM
   const loginLink = document.getElementById("loginLink");
-  loginLink.innerHTML = '<a href="#">Logout</a>';
+  loginLink.textContent = "";
 
-  //GESTION DECONNEXION UTILISATEUR AU CLIC SUR LOGOUT
-  loginLink.addEventListener("click", function () {
-    //SUPPRESSION DU TOKEN
-    localStorage.removeItem("token");
+  updateUI();
 
-    //Redirection vers page de connexion (login.html)
-    window.location.href = "login.html";
+  function updateUI() {
+    const isLoggedIn = !!token;
+    loginLink.textContent = isLoggedIn ? "Logout" : "Login";
+    //FONCTION CREATION ET INSERTION BANDEAU EDITION
+    if (isLoggedIn) {
+      //APPELER LES FONCTIONS DE CREATION ELEMENTS
+      creerEtAfficherBandeauEdition();
+      creerEtAfficherBoutonModifier();
+    }
+  }
+  //ECOUTEUR D EVENEMENT AU CLIC SUR LIEN
+  loginLink.addEventListener("click", () => {
+    if (token) {
+      localStorage.removeItem("token");
+      updateUI();
+      window.location.href = "login.html";
+    } else {
+      window.location.href = "login.html";
+    }
   });
-  if (modifierButton) {
-    modifierButton.style.display = "block";
-  }
-  if (editModeBanner) {
-    editModeBanner.style.display = "flex";
-  }
-} else {
-  //si token pas present elements cachés
-  const modifierButton = document.getElementById("modifierButton");
-  if (modifierButton) {
-    modifierButton.style.display = "none";
+  //CREER LE BANDEAU
+  function creerEtAfficherBandeauEdition() {
+    const editModeBanner = document.createElement("div");
+    editModeBanner.id = "editModeBanner";
+    editModeBanner.classList.add("edit-mode-banner");
+
+    //CREER L ICONE
+    const icon = document.createElement("i");
+    icon.classList.add("far", "fa-edit");
+
+    //CREER LE TEXTE
+    const modeEditionP = document.createElement("p");
+    modeEditionP.textContent = "Mode édition";
+
+    //AJOUTER ICONE ET TEXTE AU BANDEAU
+    editModeBanner.appendChild(icon);
+    editModeBanner.appendChild(modeEditionP);
+
+    //INSERTION BANDEAU AU DEBUT DU BODY
+    const body = document.body;
+    body.insertBefore(editModeBanner, body.firstChild);
   }
 
-  const editModeBanner = document.getElementById("editModeBanner");
-  if (editModeBanner) {
-    editModeBanner.style.display = "none";
-  }
+  //FONCTION CREATION ET INSERTION BOUTON MODIFIER
+  function creerEtAfficherBoutonModifier() {
+    const modifierButton = document.createElement("button");
+    modifierButton.id = "modifierButton";
+    modifierButton.textContent = "Modifier";
+    modifierButton.classList.add("modifierButton");
+    //AJOUTER ICONE
+    const icon = document.createElement("i");
+    icon.classList.add("far", "fa-pen-to-square");
+    modifierButton.insertBefore(icon, modifierButton.firstChild);
 
-  const loginLink = document.getElementById("loginLink");
-  if (loginLink) {
-    loginLink.innerHTML = '<a href="login.html">Login</a>';
+    //INSERTION BOUTON DANS CONTAINER
+    const modifierButtonContainer = document.getElementById(
+      "modifierButtonContainer"
+    );
+
+    if (modifierButtonContainer) {
+      modifierButtonContainer.appendChild(modifierButton);
+      console.log("Bouton Modifier ajouté au DOM");
+      //gestionnaire d evenements pour ouverture modale
+      modifierButton.addEventListener("click", () => {
+        console.log("Bouton Modifier Cliqué !");
+        //afficher modale
+        const modalGestionPhoto = document.getElementById("modalGestionPhoto");
+        if (modalGestionPhoto) {
+          if (typeof modalGestionPhoto.showModal === "function") {
+            modalGestionPhoto.showModal();
+          } else {
+            modalGestionPhoto.style.display = "block";
+          }
+          loadModalImages();
+        } else {
+          console.log("modale gestion photo non trouvée");
+        }
+      });
+    }
   }
-}
+});

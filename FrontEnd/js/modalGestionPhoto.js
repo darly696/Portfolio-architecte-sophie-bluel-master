@@ -1,8 +1,49 @@
 import { generateMainGallery } from "./gallery.js";
+
 //selection galerie dans la modale
 const modalGallery = document.getElementById("modal-images");
 const token = localStorage.getItem("token");
+const modalGestionPhoto = document.getElementById("modalGestionPhoto");
 
+//FONCTION POUR CHARGER LES IMAGES DS LA MODALE
+export function loadModalImages() {
+  fetch("http://localhost:5678/api/works")
+    .then((response) => response.json())
+    .then((data) => {
+      modalGallery.innerHTML = "";
+
+      //PARCOURS DES DONNEES RECUPEREES
+      data.forEach((work) => {
+        //creation du conteneur pour chaque paire image-corbeille
+        const container = document.createElement("div");
+        container.classList.add("modal-image-container");
+
+        //creation de l element html pour l image
+        const img = document.createElement("img");
+        img.src = work.imageUrl;
+        img.alt = work.title;
+
+        //creation de l element html pour les corbeilles
+        const trashIcon = document.createElement("i");
+        trashIcon.classList.add("fa", "fa-trash");
+
+        //stockage identifiant de l image
+        container.dataset.imageId = work.id;
+
+        //ajout image et corbeille au container
+        container.appendChild(img);
+        container.appendChild(trashIcon);
+
+        //ajout du conteneur à la galerie modal
+        modalGallery.appendChild(container);
+      });
+    })
+    .catch((error) => {
+      console.error("Erreur lors de la recup des donnees :", error);
+    });
+}
+
+//GESTION DE LA SUPPRESSION DES IMAGES
 modalGallery.addEventListener("click", function (event) {
   //verification si cible au clic est corbeille
   if (event.target.classList.contains("fa-trash")) {
@@ -34,78 +75,34 @@ modalGallery.addEventListener("click", function (event) {
   }
 });
 
-//recuperation images API
-fetch("http://localhost:5678/api/works")
-  .then((response) => response.json())
-  .then((data) => {
-    //Effacement contenu precedent de la galerie
-    modalGallery.innerHTML = "";
+//ajout gestionnaires pour fermer la modale
+const closeModalButton = document.getElementById("closeModalButton");
+//fermeture modale avec closemodalButton
+closeModalButton.addEventListener("click", function () {
+  modalGestionPhoto.close();
+  loadModalImages();
+});
 
-    //Parcours des données récupérées
-    data.forEach((work) => {
-      //creation du conteneur pour chaque paire image-corbeille
-      const container = document.createElement("div");
-      container.classList.add("modal-image-container");
+//fermeture modale clic exterieur
 
-      //creation de l element html pour l image
-      const img = document.createElement("img");
+window.addEventListener("click", function (event) {
+  //verification si modale ouverte
+  if (modalGestionPhoto.open && !modalGestionPhoto.contains(event.target)) {
+    //fermeture modale
+    modalGestionPhoto.close();
+    loadModalImages();
+  }
+});
 
-      img.src = work.imageUrl;
-      img.alt = work.title;
+//ouverture modalAjoutPhoto
+function openModalAjoutPhoto() {
+  modalGestionPhoto.close();
 
-      //creation de l element html pour les corbeilles
-      const trashIcon = document.createElement("i");
-      trashIcon.classList.add("fa", "fa-trash");
+  const modalAjoutPhoto = document.getElementById("modalAjoutPhoto");
+  modalAjoutPhoto.showModal();
+}
 
-      //stockage identifiant de l image
-      container.dataset.imageId = work.id;
-
-      //ajout image et corbeille au container
-      container.appendChild(img);
-      container.appendChild(trashIcon);
-
-      //ajout du conteneur à la galerie modal
-      modalGallery.appendChild(container);
-    });
-
-    //ajout gestionnaires pour fermer la modale
-    const modal = document.getElementById("modalGestionPhoto");
-    const closeModalButton = document.getElementById("closeModalButton");
-
-    //fermeture modale avec closemodalButton
-    closeModalButton.addEventListener("click", function () {
-      modal.style.display = "none";
-    });
-
-    //fermeture modale clic exterieur
-    const modalGestionPhoto = document.getElementById("modalGestionPhoto");
-    window.addEventListener("click", function (event) {
-      //verification si modale ouverte
-      if (modalGestionPhoto.style.display === "block") {
-        //verification si element cliqué n est pas modale ou un de ses enfants
-        if (!modalGestionPhoto.contains(event.target)) {
-          //fermeture modale
-          modalGestionPhoto.style.display = "none";
-        }
-      }
-    });
-
-    //ouverture modalAjoutPhoto
-    const openFirstModalButton = document.getElementById(
-      "openFirstModalButton"
-    );
-    openFirstModalButton.addEventListener("click", function () {
-      openModalAjoutPhoto();
-    });
-    function openModalAjoutPhoto() {
-      //fermeture de gestionphoto
-      const modalGestionPhoto = document.getElementById("modalGestionPhoto");
-      modalGestionPhoto.close();
-
-      const modalAjoutPhoto = document.getElementById("modalAjoutPhoto");
-      modalAjoutPhoto.showModal();
-    }
-  })
-  .catch((error) => {
-    console.error("Erreur lors recuperation des données:", error);
-  });
+const openFirstModalButton = document.getElementById("openFirstModalButton");
+openFirstModalButton.addEventListener("click", function () {
+  openModalAjoutPhoto();
+});
