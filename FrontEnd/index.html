@@ -96,31 +96,35 @@
 	<div class="fa fa-arrow-left" id="backButton"></div>
 
 	<div class="form-container">
-		<div class="image preview form-container">
+		<div class="image-upload-container">
+	  <div class="image-upload">
+	
+		<!-- icone et bouton ajouter photo -->
+		 <i class="fa fa-image"></i>
+		 <button id="addPhotoButtonModal">Ajouter photo</button>
+		 <p>jpeg, png : 4Mo max</p>
+
+		 <!--champ de selection pour uploader l image -->
+		 <input type="file" id="fileInput" accept="image/jpeg, image/png" style = "display:none;">
+
+		 <!--Image de Prévisualisation -->
+		 <img id="imagePreview" class="hidden-preview"style="display:none;">
 		
 		</div>
-
-	<div class="image-upload-container">
-	  <div class="image-upload">
-		<i class="fa fa-image"></i>
-		<button id="addPhotoButtonModal">Ajouter photo</button>
-		<p>jpeg. png:4Mo max</p>
-		<!--CHAMP DE SELECTION POUR UPLOADER IMAGES-->
-		<input type="file" id="fileInput" accept="image/jpeg, image/png">
-		<img id="imagePreview" alt="aperçu de l image" class="hidden-preview">
-	  </div>
 	</div>
 
    <!--ajout d un formulaire pour soumission données -->
-   <form id="uploadForm" style=" display: none;">
+   <form id="uploadForm">
 	<div id="titre-categorie-container">
-	  <h3>Titre</h3>
+	  
+	  <label for ="titleInput">Titre :</label>
 	  <input type="text" id="titleInput" placeholder="" />
-	  <h3>Categorie</h3>
+	  
+	  <label for="categoryInput">Catégorie :</label>
 	</div>
 	
 	<div class="category-selector">
-	  <select id="categorySelect">
+	  <select id="categoryInput">
 		<option value=""></option>
 		<option value="objets">Objets</option>
 		<option value="appartements">Appartements</option>

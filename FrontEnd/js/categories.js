@@ -1,4 +1,4 @@
-//FONCTION POUR RECUPERER LES TRAVAVAUX DEPUIS API
+//1) FONCTION POUR RECUPERER LES TRAVAUX DEPUIS API
 function fetchCategories() {
   //REQUETE POUR OBTENIR LES CATEGORIES
   fetch("http://localhost:5678/api/categories")
@@ -17,17 +17,22 @@ function fetchCategories() {
       console.error("Erreur lors de la recuperation des catégories:", error);
     });
 }
-// FONCTION GENERATION DU MENU DE CATEGORIES
+//2) FONCTION GENERATION DU MENU DE CATEGORIES
 function generateCategoryMenu(categories) {
   //SELECTION ELEMENT HTML REPRESENTANT LE CONTENEUR DU MENU
   var menu = document.getElementById("categories-menu");
-  //POUR EVITER DUPLICATION A CHAQUE APPEL menu.innerHTML =""; ???
+  menu.innerHTML = "";
 
   //CREATION D UN ELEMENT DE LISTE POUR CHAQUE CATEGORIE ET AJOUT AU MENU
-  categories.forEach((category) => {
+  categories.forEach((category, index) => {
     var listItem = document.createElement("li");
     listItem.textContent = category.name;
     listItem.setAttribute("data-category-id", category.id);
+
+    if (index === 0) {
+      listItem.classList.add("selected");
+      filterWorksByCategory("all");
+    }
 
     //AJOUT ECOUTEUR D EVENEMENT CLIC SUR UNE CATEGORIE
     listItem.addEventListener("click", function () {
@@ -48,7 +53,7 @@ function generateCategoryMenu(categories) {
   });
 }
 
-//FONCTION FILTRAGE DES TRAVAUX PAR CATEGORIE
+//3) FONCTION FILTRAGE DES TRAVAUX PAR CATEGORIE
 async function filterWorksByCategory(categoryId) {
   try {
     //RECUPERATION DE TOUS LES TRAVAUX (FIGURE) DE LA GALERIE
@@ -75,4 +80,4 @@ async function filterWorksByCategory(categoryId) {
     //POSSIBILITE AFFICHER MESSAGE D ERREUR POUR UTILISATEUR ???
   }
 }
-fetchCategories(); //APPEL DE LA FONCTION DEMARRAGE RECUPERATION ET GENERATION DES CATEGORIES
+fetchCategories(); //4) APPEL DE LA FONCTION DEMARRAGE RECUPERATION ET GENERATION DES CATEGORIES
