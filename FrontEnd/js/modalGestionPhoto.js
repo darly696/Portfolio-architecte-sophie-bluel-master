@@ -5,6 +5,12 @@ const modalGallery = document.getElementById("modal-images");
 const token = localStorage.getItem("token");
 const modalGestionPhoto = document.getElementById("modalGestionPhoto");
 
+//Overlay
+const overlay = document.createElement("div");
+overlay.id = "overlay";
+overlay.addEventListener("click", () => modalGestionPhoto.close());
+modalGestionPhoto.appendChild(overlay);
+
 //FONCTION POUR CHARGER LES IMAGES DS LA MODALE
 export function loadModalImages() {
   fetch("http://localhost:5678/api/works")
@@ -83,21 +89,9 @@ closeModalButton.addEventListener("click", function () {
   loadModalImages();
 });
 
-//fermeture modale clic exterieur
-
-window.addEventListener("click", function (event) {
-  //verification si modale ouverte
-  if (modalGestionPhoto.open && !modalGestionPhoto.contains(event.target)) {
-    //fermeture modale
-    modalGestionPhoto.close();
-    loadModalImages();
-  }
-});
-
 //ouverture modalAjoutPhoto
-function openModalAjoutPhoto() {
+export function openModalAjoutPhoto() {
   modalGestionPhoto.close();
-
   const modalAjoutPhoto = document.getElementById("modalAjoutPhoto");
   modalAjoutPhoto.showModal();
 }

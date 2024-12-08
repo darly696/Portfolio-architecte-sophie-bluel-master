@@ -4,8 +4,7 @@ import { loadModalImages } from "./modalGestionPhoto.js";
 document.addEventListener("DOMContentLoaded", () => {
   const token = localStorage.getItem("token");
   //selection element loginLink dans le DOM
-  const loginLink = document.getElementById("loginLink");
-  loginLink.textContent = "";
+  const loginLink = document.querySelector("#loginLink a");
 
   updateUI();
 
@@ -21,14 +20,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   //ECOUTEUR D EVENEMENT AU CLIC SUR LIEN
   loginLink.addEventListener("click", () => {
-    if (token) {
-      localStorage.removeItem("token");
-      updateUI();
-      window.location.href = "login.html";
-    } else {
-      window.location.href = "login.html";
-    }
+    localStorage.removeItem("token");
   });
+
   //CREER LE BANDEAU
   function creerEtAfficherBandeauEdition() {
     const editModeBanner = document.createElement("div");
@@ -58,6 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
     modifierButton.id = "modifierButton";
     modifierButton.textContent = "Modifier";
     modifierButton.classList.add("modifierButton");
+
     //AJOUTER ICONE
     const icon = document.createElement("i");
     icon.classList.add("far", "fa-pen-to-square");
@@ -76,16 +71,8 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("Bouton Modifier Cliqué !");
         //afficher modale
         const modalGestionPhoto = document.getElementById("modalGestionPhoto");
-        if (modalGestionPhoto) {
-          if (typeof modalGestionPhoto.showModal === "function") {
-            modalGestionPhoto.showModal();
-          } else {
-            modalGestionPhoto.style.display = "block";
-          }
-          loadModalImages();
-        } else {
-          console.log("modale gestion photo non trouvée");
-        }
+        modalGestionPhoto.showModal();
+        loadModalImages();
       });
     }
   }
