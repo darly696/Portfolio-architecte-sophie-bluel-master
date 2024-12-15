@@ -5,12 +5,6 @@ const modalGallery = document.getElementById("modal-images");
 const token = localStorage.getItem("token");
 const modalGestionPhoto = document.getElementById("modalGestionPhoto");
 
-//Overlay
-const overlay = document.createElement("div");
-overlay.id = "overlay";
-overlay.addEventListener("click", () => modalGestionPhoto.close());
-modalGestionPhoto.appendChild(overlay);
-
 //FONCTION POUR CHARGER LES IMAGES DS LA MODALE
 export function loadModalImages() {
   fetch("http://localhost:5678/api/works")
@@ -99,4 +93,10 @@ export function openModalAjoutPhoto() {
 const openFirstModalButton = document.getElementById("openFirstModalButton");
 openFirstModalButton.addEventListener("click", function () {
   openModalAjoutPhoto();
+});
+//Ajout de l ecouteur d évènement click sur backdrop
+modalGestionPhoto.addEventListener("click", (event) => {
+  if (event.target === modalGestionPhoto) {
+    modalGestionPhoto.close();
+  }
 });

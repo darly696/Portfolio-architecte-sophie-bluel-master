@@ -1,6 +1,13 @@
 import { openModalAjoutPhoto } from "./modalGestionPhoto.js";
 const ModalAjoutPhoto = document.getElementById("modalAjoutPhoto");
 const openFirstModalButton = document.getElementById("openFirstModalButton");
+//FONCTION REINITIALISATION MODALE
+function resetModal() {
+  uploadForm.reset();
+  imgPreview.style.display = "none";
+  validateButton.classList.remove("active");
+  fileInput = "";
+}
 openFirstModalButton.addEventListener("click", function () {
   console.log("Bouton 'ajouter ue photo' cliqué");
   openModalAjoutPhoto();
@@ -32,7 +39,11 @@ let objectURL;
 
 //fonction pour verifier si formulaire complet
 function checkFormCompletion() {
-  if (fileInput.files[0] && titleInput.value && categoryInput?.value) {
+  if (
+    fileInput.files[0] &&
+    titleInput.value &&
+    categoryInput.selectedIndex > 0
+  ) {
     console.log("Tous les champs sont remplis");
     validateButton.classList.add("active");
   } else {
@@ -83,7 +94,7 @@ titleInput.addEventListener("input", () => {
   console.log("champ de titre modifié");
   checkFormCompletion();
 });
-categoryInput.addEventListener("input", () => {
+categoryInput.addEventListener("change", () => {
   console.log("champ de categorie modifié");
   checkFormCompletion();
 });
@@ -93,7 +104,7 @@ categoryInput.addEventListener("input", () => {
 async function loadCategories() {
   try {
     const response = await fetch("http://localhost:5678/api/categories");
-    const data = await response.json();
+    const categories = await response.json();
     const categorySelect = document.getElementById("categoryInput");
 
     //Ajout des catégories dynamiquement
@@ -125,12 +136,18 @@ uploadForm.addEventListener("submit", (event) => {
   const formData = new FormData(uploadForm);
 
   //ex d envoi du fichier au serveur
-  fetch("http://localhost:5678/api/categories", {
+  fetch("http://localhost:5678/api/works", {
     method: "POST",
+    headers: {
+      authorization: "Bearer ${token}",
+      "Content-Type": "multipart/form-data",
+    },
     body: formData,
   })
     .then((response) => response.json())
     .then((data) => {
+      //AJOUT DE RETOUR URL
+
       console.log("succes", data);
       //R2INITIALISATION DU FORMULAIRE
       uploadForm.reset();
